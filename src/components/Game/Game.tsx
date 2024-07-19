@@ -3,6 +3,25 @@ import "./Game.css"
 
 const Game = () => {
 
+    interface IScore {
+        wins: number | null,
+        ties: number | null,
+        losses: number | null,
+        games: number| null
+    }
+
+    let score:IScore = JSON.parse(localStorage.getItem('score')!);
+
+    if (score === null) { 
+
+        score = {
+        wins: 0,
+        ties: 0,
+        losses: 0,
+        games: 0
+        }
+    }
+
     const handlePlayerMoveRock = () =>{
         setPlayerMove("Rock")
         playGame(playerMove)
@@ -47,18 +66,7 @@ const Game = () => {
             window.location.reload();
     }
 
-    interface IScore {
-        wins: number | null,
-        ties: number | null,
-        losses: number | null,
-        games: number| null
-    }
-
-    let score:IScore = JSON.parse(localStorage.getItem('score')!);
-
-
     function playGame(playerMove:string){
-
     getComputerMove();
     score.games! += 1;
     if (computerMove === playerMove) {
