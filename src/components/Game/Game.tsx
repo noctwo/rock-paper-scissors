@@ -4,18 +4,37 @@ import "./Game.css"
 const Game = () => {
 
     const handlePlayerMoveRock = () =>{
-        playGame("Rock")
+        setPlayerMove("Rock")
+        playGame(playerMove)
     }
 
     const handlePlayerMovePaper = () =>{
-        playGame("Paper")
+        setPlayerMove("Paper")
+        playGame(playerMove)
     }
 
     const handlePlayerMoveScissors = () =>{
-        playGame("Scissors")
+        setPlayerMove("Scissors")
+        playGame(playerMove)
     }
 
     const [result, setResult] = useState<string|undefined>();
+    const [computerMove, setComputerMove] = useState<string>("");
+
+    const getComputerMove = () => {
+
+        const randomNumber = Math.random(); 
+        if (randomNumber >= 0 && randomNumber < 1/3) {
+            setComputerMove('Rock');
+        } else if (randomNumber >= 1/3 && randomNumber < 2/3) {
+            setComputerMove('Paper');
+        } else if (randomNumber >= 2/3 && randomNumber < 1) {
+            setComputerMove('Scissors');
+        }
+        
+    }
+
+    const [playerMove, setPlayerMove] = useState<string>("");
 
     const handleScoreReset = () => {
         score = {
@@ -38,21 +57,9 @@ const Game = () => {
     let score:IScore = JSON.parse(localStorage.getItem('score')!);
 
 
-    function pickComputerMove() {
-    const randomNumber = Math.random(); 
-    let computerMove ='';
-    if (randomNumber >= 0 && randomNumber < 1/3) {
-        computerMove = 'Rock';
-    } else if (randomNumber >= 1/3 && randomNumber < 2/3) {
-        computerMove = 'Paper';
-    } else if (randomNumber >= 2/3 && randomNumber < 1) {
-        computerMove = 'Scissors';
-    }
-    return computerMove;
-    }
-
     function playGame(playerMove:string){
-    const computerMove = pickComputerMove();
+
+    getComputerMove();
     score.games! += 1;
     if (computerMove === playerMove) {
         setResult('Tie');
@@ -84,6 +91,8 @@ const Game = () => {
             </div>
             <div className="result-output-area">
                 <h2>{result}</h2>
+                <p>Your Move: <span>{playerMove}</span></p>
+                <p>Cmputer Move: <span>{computerMove}</span></p>
                 <div className="score-output-area">
                 <h3>Score</h3>
                 <p>Wins: <span>{score.wins}</span></p>
